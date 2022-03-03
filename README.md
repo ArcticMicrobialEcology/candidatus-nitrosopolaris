@@ -1,2 +1,2 @@
-# candidatus-nitrosopolaris
+# Candidatus Nitrosopolaris
  
