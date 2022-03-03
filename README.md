@@ -19,10 +19,9 @@ Principal Investigator
 ## Table of contents
 
 1. [Before starting](#before-starting)
-2. [Download genomes and import to anvi'o](#download-genomes-and–import-to-anvio)
+2. [Download genomes and import to anvi'o](#download-genomes-and-import-to-anvio)
 3. [Annotation](#annotation)
-<!-- 4. [Gene-centric analyses](04-gene-centric.md) -->
-<!-- 5. [Working with MAGs](05-working-with-MAGs.md) -->
+4. [Phylogeny and phylogenomics](#phylogeny-and-phylogenomics)
 
 
 ## Before starting
