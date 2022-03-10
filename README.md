@@ -1,4 +1,6 @@
-# Candidatus Nitrosopolaris
+# *Candidatus* Nitrosopolaris
+
+![Candidatus Nitrosopolaris](candidatus-nitrosopolaris.png)
 
 Bioinformatics workflow used in the article:
 
@@ -22,12 +24,14 @@ Principal Investigator
 2. [Download genomes and import to anvi'o](#download-genomes-and-import-to-anvio)
 3. [Annotation](#annotation)
 4. [Phylogeny and phylogenomics](#phylogeny-and-phylogenomics)
+5. [Abundance analysis](#abundance-analysis)
 
 
 ## Before starting
 
 ### You will need to have these softwares installed and added to your path
 
+* SRA Toolkit v2.11.3: https://github.com/ncbi/sra-tools
 * GNU parallel: https://www.gnu.org/software/parallel
 * anvi’o v7.0: https://merenlab.org/software/anvio
 * Prodigal v2.6.3: https://github.com/hyattpd/Prodigal
@@ -163,7 +167,7 @@ printf '%s\n' $GENOMES |
 parallel -I % --bar --max-args 1 'anvi-export-functions --contigs-db CONTIGSDB/%.db \
                                                         --output-file ANNOTATION/KOFAM/%.txt \
                                                         --annotation-sources KOfam'
-$NTHREADS
+
 # Annotate against PFAM with HMMER
 mkdir ANNOTATION/PFAM
 
@@ -203,11 +207,11 @@ done
 cat ANNOTATION/AMO/amo.K10944.faa ANNOTATION/AMO/amo.K10945.faa ANNOTATION/AMO/amo.K10946.faa > ANNOTATION/AMO/amo.faa
 
 # BLASTp against KEGG
-diamond blastp --query ANNOTATION/AMO/amo.faa  \
-               --out ANNOTATION/AMO/amo_blast_KEGG.txt \
-               --db /projappl/project_2000577/KEGG/PROKARYOTES \
-               --outfmt 6 qseqid sseqid stitle pident qcovhsp evalue bitscore \
-               --threads $NTHREADS
+blastp -query ANNOTATION/AMO/amo.faa \
+       -out ANNOTATION/AMO/amo_blast_refseq.txt \
+       -db kegg \
+       -outfmt "6 qseqid sseqid stitle pident qcovs evalue bitscore" \
+       -num_threads $NTHREADS
 
 # BLASTp against RefSeq
 blastp -query ANNOTATION/AMO/amo.faa \
@@ -301,7 +305,7 @@ anvi-get-sequences-for-hmm-hits --external-genomes external_genomes.txt \
                                 --concatenate-genes \
                                 --return-best-hit
 
-# Build phylogenomic tree
+# Build phylogenomic tree with IQTREE
 iqtree -s PHYLOGENOMICS/76_single_copy_genes.faa \
        -m LG+F+R4 \
        -B 1000 \
@@ -329,11 +333,11 @@ anvi-get-sequences-for-hmm-hits --external-genomes external_genomes.txt \
                                 --hmm-source Ribosomal_RNA_16S \
                                 --gene-names 16S_rRNA_arc,16S_rRNA_bac
 
-# Align
+# Align with MUSCLE
 muscle -in 16S_rRNA/sequences.fa \
        -out 16S_rRNA/aligned.fa
 
-# Build phylogenetic tree
+# Build phylogenetic tree with IQTREE
 iqtree -s 16S_rRNA/aligned.fa \
        -B 1000 \
        --prefix 16S_rRNA/16S_rRNA_iqtree
@@ -351,4 +355,55 @@ blastn -query 16S_rRNA/sequences.fa \
        -db 16S_rRNA/sequences \
        -outfmt "6 qseqid sseqid pident qcovs evalue bitscore" \
        -num_threads $NTHREADS
+```
+
+
+## Abundance analysis
+
+First download the metadata for each of the four datasets:
+
+* Kilpisjärvi, Finland (Pessi et al. 2021; https://doi.org/10.1101/2020.12.21.419267): [KILPISJARVI.metadata.tsv](KILPISJARVI.metadata.tsv)
+* Rásttigáisá, Norway (this study): [RASTTIGAISA.metadata.tsv](RASTTIGAISA.metadata.tsv)
+* Nunavut, Canada (Chauhan et al. 2014; https://doi.org/10.1128/genomeA.01217-14): [NUNAVUT.metadata.tsv](NUNAVUT.metadata.tsv)
+* Wilkes Land, Antarctica (Ji et al. 2017; https://doi.org/10.1038/nature25014): [WILKESLAND.metadata.tsv](WILKESLAND.metadata.tsv)
+
+### Download metagenomes with fasterq-dump
+
+```bash
+mkdir MAPPING
+
+for DATASET in KILPISJARVI RASTTIGAISA NUNAVUT WILKESLAND; do
+  mkdir MAPPING/$DATASET
+  
+  SAMPLES=`cut -f 1 $DATASET.metadata.tsv | sed '1d'`
+  
+  for SAMPLE in $SAMPLES; do
+    fasterq-dump $SAMPLE \
+                 --outdir MAPPING/$DATASET \
+                 --threads $NTHREADS \
+                 --split-files
+  done
+done
+```
+
+### Map reads and calculate relative abundance with Coverm
+
+```bash
+GENOMES=`grep UBA10452 genomes_metadata.tsv | cut -f 1`
+
+# Get UBA10452 genomes
+mkdir MAPPING/UBA10452_GENOMES
+
+for GENOME in $GENOMES; do
+  cp GENOMES/$GENOME MAPPING/UBA10452_GENOMES
+done
+
+# Calculate relative abundance with CoverM
+for DATASET in KILPISJARVI RASTIGAISA NUNAVUT WILKESLAND; do
+  coverm genome --coupled MAPPING/$DATASET/*.fastq \
+                --genome-fasta-files MAPPING/UBA10452_GENOMES/*.fa \
+                --output-file MAPPING/$DATASET/coverM_relabund.txt \
+                --min-covered-fraction 0 \
+                --threads $NTHREADS
+done
 ```
