@@ -1,0 +1,14 @@
+Run	Sample	Category
+SRR1586250	A20_5_cm_control_0M	root zone
+SRR1586251	A20_35_cm_control_0M	active layer above water table
+SRR1586252	A20_65_cm_control_0M	active layer below water table
+SRR1586253	A20_80_cm_control_0M	permafrost
+SRR1586265	A20_5_cm_control_0.25M	root zone
+SRR1586266	A20_65_cm_control_0.25M	active layer below water table
+SRR1586267	A20_80_cm_control_0.25M	permafrost
+SRR1586280	A26_5_cm_control_6M	root zone
+SRR1586281	A26_35_cm_control_6M	active layer above water table
+SRR1586282	A26_65_cm_control_6M	active layer below water table
+SRR1586299	A34_5_cm_control_12M	root zone
+SRR1586300	A34_35_cm_control_12M	active layer above water table
+SRR1586301	A34_65_cm_control_12M	active layer below water table
