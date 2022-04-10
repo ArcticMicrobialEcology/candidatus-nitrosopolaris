@@ -368,10 +368,12 @@ blastn -query 16S_rRNA/sequences.fa \
 
 First download the metadata for each of the four datasets:
 
-* Kilpisjärvi, Finland (Pessi et al. 2021; https://doi.org/10.1101/2020.12.21.419267): [KILPISJARVI.metadata.tsv](KILPISJARVI.metadata.tsv)
-* Rásttigáisá, Norway (this study): [RASTTIGAISA.metadata.tsv](RASTTIGAISA.metadata.tsv)
-* Nunavut, Canada (Chauhan et al. 2014; https://doi.org/10.1128/genomeA.01217-14): [NUNAVUT.metadata.tsv](NUNAVUT.metadata.tsv)
-* Wilkes Land, Antarctica (Ji et al. 2017; https://doi.org/10.1038/nature25014): [WILKESLAND.metadata.tsv](WILKESLAND.metadata.tsv)
+| Dataset                                                                             | Metadata file                                        |
+| ------------------------------------------------------------------------------------| -----------------------------------------------------|
+| Rásttigáisá, Norway (this study)                                                    | [RASTTIGAISA.metadata.tsv](RASTTIGAISA.metadata.tsv) |
+| Kilpisjärvi, Finland (Pessi et al. 2021; https://doi.org/10.1101/2020.12.21.419267) | [KILPISJARVI.metadata.tsv](KILPISJARVI.metadata.tsv) |
+| Nunavut, Canada (Chauhan et al. 2014; https://doi.org/10.1128/genomeA.01217-14)     | [NUNAVUT.metadata.tsv](NUNAVUT.metadata.tsv)         |
+| Wilkes Land, Antarctica (Ji et al. 2017; https://doi.org/10.1038/nature25014)       | [WILKESLAND.metadata.tsv](WILKESLAND.metadata.tsv)   |
 
 ### Download metagenomes with fasterq-dump
 
