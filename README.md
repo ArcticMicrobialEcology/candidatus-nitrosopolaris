@@ -31,6 +31,7 @@ Principal Investigator
 
 ### You will need to have these softwares installed and added to your path
 
+* Entrez Direct v16.2: https://www.ncbi.nlm.nih.gov/books/NBK179288/
 * SRA Toolkit v2.11.3: https://github.com/ncbi/sra-tools
 * GNU parallel: https://www.gnu.org/software/parallel
 * anvi’o v7.0: https://merenlab.org/software/anvio
@@ -68,19 +69,24 @@ You should download it [here](genomes_metadata.tsv) and move it to where you wil
 ### Get genomes
 
 ```bash
-mkdir GENOMES_RAW
+GENOMES=`cut -f 1 genomes_metadata.tsv | sed '1d'`
 
 # Download genomes
-while read GENOME FTP_PATH; do
-  curl $FTP_PATH | gunzip > GENOMES_RAW/$GENOME.fa
-done < <(cut -f 1,9 genomes_metadata.tsv | sed '1d')
+mkdir GENOMES_RAW
+
+for GENOME in $GENOMES; do
+  esearch -db assembly -query $GENOME | 
+  esummary |
+  xtract -pattern DocumentSummary -element FtpPath_GenBank |
+  awk -F '/' -v OFS='/' '{print $0, $10 "_genomic.fna.gz"}' |
+  xargs curl --silent | 
+  gunzip > GENOMES_RAW/$GENOME.fa
+done
 ```
 
 ### Import to anvi'o
 
 ```bash
-GENOMES=`cut -f 1 genomes_metadata.tsv | sed '1d'`
-
 # Reformat FASTA
 mkdir GENOMES
 
