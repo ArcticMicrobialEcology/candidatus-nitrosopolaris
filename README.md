@@ -149,7 +149,7 @@ done
 mkdir GENE_CALLS
 mkdir ANNOTATION
 
-GENOMES=`grep UBA10452 genomes_metadata.tsv | cut -f 1`
+GENOMES=`grep Nitrospolaris genomes_metadata.tsv | cut -f 1`
 
 # Get sequences for gene calls
 printf '%s\n' $GENOMES |
@@ -195,6 +195,17 @@ printf '%s\n' $GENOMES |
 parallel -I % --bar --max-args 1 'anvi-export-functions --contigs-db CONTIGSDB/%.db \
                                                         --output-file ANNOTATION/COG/%.txt \
                                                         --annotation-sources COG20_FUNCTION'
+
+# Annotate against arCOGS with BLAST
+mkdir ANNOTATION/ARCOG
+
+printf '%s\n' $GENOMES |
+parallel -I % --bar --max-args 1 'blastp -query GENE_CALLS/%.faa \
+                                         -out ANNOTATION/ARCOG/%.txt \
+                                         -db arCOGs_2014/ar14 \
+                                         -outfmt "6 qseqid sseqid stitle pident qcovs evalue bitscore" \
+                                         -max_target_seqs 1 \
+                                         -max_hsps 1'
 ```
 
 ### amoABC analysis
@@ -397,19 +408,19 @@ done
 ### Map reads and calculate relative abundance with Coverm
 
 ```bash
-GENOMES=`grep UBA10452 genomes_metadata.tsv | cut -f 1`
+GENOMES=`grep Nitrosopolaris genomes_metadata.tsv | cut -f 1`
 
-# Get UBA10452 genomes
-mkdir MAPPING/UBA10452_GENOMES
+# Get Nitrosopolaris genomes
+mkdir MAPPING/NITROSOPOLARIS_GENOMES
 
 for GENOME in $GENOMES; do
-  cp GENOMES/$GENOME MAPPING/UBA10452_GENOMES
+  cp GENOMES/$GENOME MAPPING/NITROSOPOLARIS_GENOMES
 done
 
 # Calculate relative abundance with CoverM
 for DATASET in RASTTIGAISA KILPISJARVI NUNAVUT WILKESLAND; do
   coverm genome --coupled MAPPING/$DATASET/*.fastq \
-                --genome-fasta-files MAPPING/UBA10452_GENOMES/*.fa \
+                --genome-fasta-files MAPPING/NITROSOPOLARIS_GENOMES/*.fa \
                 --output-file MAPPING/$DATASET/coverM_relabund.txt \
                 --min-covered-fraction 0 \
                 --threads $NTHREADS
