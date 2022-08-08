@@ -4,7 +4,7 @@
 
 Bioinformatics workflow used in the article:
 
-> Pessi IS, Rutanen A, Hultman J. 2021. *Candidatus* Nitrosopolaris, a genus of putative ammonia-oxidizing archaea with a polar/alpine distribution. BioRxiv, doi: [10.1101/2021.12.10.472193](https://doi.org/10.1101/2021.12.10.472193).
+> Pessi IS, Rutanen A, Hultman J. 2021. *Candidatus* Nitrosopolaris, a genus of putative ammonia-oxidizing archaea with a polar/alpine distribution. FEMS Microbes, doi: [10.1093/femsmc/xtac019](https://doi.org/10.1093/femsmc/xtac019).
 
 
 ## Contacts
