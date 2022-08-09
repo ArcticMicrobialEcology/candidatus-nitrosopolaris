@@ -4,7 +4,7 @@
 
 Bioinformatics workflow used in the article:
 
-> Pessi IS, Rutanen A, Hultman J. 2021. *Candidatus* Nitrosopolaris, a genus of putative ammonia-oxidizing archaea with a polar/alpine distribution. FEMS Microbes, doi: [10.1093/femsmc/xtac019](https://doi.org/10.1093/femsmc/xtac019).
+> Pessi IS, Rutanen A, Hultman J. 2021. *Candidatus* Nitrosopolaris, a genus of putative ammonia-oxidizing archaea with a polar/alpine distribution. FEMS Microbes 3: xtac019. doi: [10.1093/femsmc/xtac019](https://doi.org/10.1093/femsmc/xtac019).
 
 
 ## Contacts
@@ -33,19 +33,14 @@ Principal Investigator
 
 * Entrez Direct v16.2: https://www.ncbi.nlm.nih.gov/books/NBK179288/
 * SRA Toolkit v2.11.3: https://github.com/ncbi/sra-tools
+* fasterq-dump v2.10.8: https://github.com/glarue/fasterq_dump
 * GNU parallel: https://www.gnu.org/software/parallel
 * anvi’o v7.0: https://merenlab.org/software/anvio
-* Prodigal v2.6.3: https://github.com/hyattpd/Prodigal
-* HMMER 3.3: http://hmmer.org
-* DIAMOND v0.9.14: https://github.com/bbuchfink/diamond
 * BLAST v2.10.1: https://ftp.ncbi.nlm.nih.gov/blast/executables/blast+
 * seqtk v1.3: https://github.com/lh3/seqtk
 * MUSCLE v3.8.1551: http://www.drive5.com/muscle
 * IQ-TREE v2.1.4: http://www.iqtree.org
-* pyani v0.2.10: https://github.com/widdowquinn/pyani
-* fasterq-dump v2.10.8: https://github.com/glarue/fasterq_dump
 * CoverM v0.6.1: https://github.com/wwood/CoverM/
-* minimap v2.17: https://github.com/lh3/minimap2
 
 We have used an Atos BullSequana X400 system running the Red Hat Enterprise Linux Server 7.7 (Maipo).  
 You should be able to run the analysis with any UNIX-based OS.
